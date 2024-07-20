@@ -1,0 +1,17 @@
+{
+  "name": "yalco-graphql-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "apollo-server": "^3.13.0",
+    "convert-csv-to-json": "^2.48.0",
+    "graphql": "^16.9.0"
+  }
+}
