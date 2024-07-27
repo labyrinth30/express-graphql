@@ -18,6 +18,21 @@ const typeDefs = gql`
     equipments: [Equipment]
     supplies: [Supply]
   }
+  type Mutation {
+    deleteEquipment(id: String): Equipment
+    insertEquipment(
+    id: String,
+    used_by: String,
+    count: Int,
+    new_or_used: String
+    ): Equipment
+    modifyEquipment(
+    id: String,
+    used_by: String,
+    count: Int,
+    new_or_used: String
+    ): Equipment
+  }
   type Team {
     id: Int
     manager: String
@@ -65,6 +80,32 @@ const resolvers = {
     })[0],
     equipments: () => database.equipments,
     supplies: () => database.supplies
+  },
+  Mutation: {
+    // 실제로는 DB에 삭제하는 로직이 들어가야 함
+    deleteEquipment: (parent, args, context, info) => {
+        const deleted = database.equipments
+            .filter((equipment) => {
+                return equipment.id === args.id
+            })[0]
+        database.equipments = database.equipments
+            .filter((equipment) => {
+                return equipment.id !== args.id
+            })
+        return deleted
+    },
+    insertEquipment: (parent, args, context, info) => {
+        database.equipments.push(args)
+        return args
+    },
+    modifyEquipment: (parent, args, context, info) => {
+        return database.equipments.filter((equipment) => {
+          return equipment.id === args.id
+        }).map((equipment) => {
+          Object.assign(equipment, args)
+          return equipment
+        })[0]
+    },
   }
 }
 // ApolloServer => typeDefs, resolvers를 받아 서버 생성
